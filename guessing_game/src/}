@@ -1,0 +1,24 @@
+// importing library for input and output
+use rand::Rng;
+use std::io;
+
+// entry point
+fn main() {
+    println!("Guess the Number!!!");
+    println!("Enter your Guess: ");
+
+    let randomNumber = rand::thread_rng().gen_range(1..=100);
+    println!("Generated number is : {randomNumber")
+
+    // defining variable
+    // mut keyword coz by default variables are immutable
+    let mut guess = String::new();
+
+    // taking input
+    io::stdin()
+        .read_line(&mut guess)
+        .expect("Failed to read line");
+
+    // printing the input
+    println!("You guessed : {guess}");
+}
