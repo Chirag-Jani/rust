@@ -1,12 +1,68 @@
 fn main() {
-    loops();
+    conventional_loops();
 }
 
-fn loops() {
-    loop {
-        println!("Again")
+fn conventional_loops() {
+    // let a = [10, 20, 30, 40, 50];
+    // let mut index = 0;
+
+    // it is slow
+    // while index < 5 {
+    //     println!("the value in whileloop is: {}", a[index]);
+
+    //     index += 1;
+    // }
+
+    // for element in a {
+    //     println!("the value in forloop is: {element}");
+    // }
+
+    for number in (1..4).rev() {
+        println!("{number}!");
     }
+    println!("LIFTOFF!!!");
 }
+
+// fn loops() {
+//     // type 1: normal loops
+//     // loop {
+//     //     println!("Again")
+//     // }
+
+//     // type 2 : assign values
+//     // let mut counter = 0;
+
+//     // let result = loop {
+//     //     counter += 1;
+
+//     //     if counter == 10 {
+//     //         break counter * 2;
+//     //     }
+//     // };
+
+//     // println!("The result is {result}");
+
+//     // type 3 : labeled loops
+//     let mut count = 0;
+//     'counting_up: loop {
+//         println!("count = {count}");
+//         let mut remaining = 10;
+
+//         loop {
+//             println!("remaining = {remaining}");
+//             if remaining == 9 {
+//                 break;
+//             }
+//             if count == 2 {
+//                 break 'counting_up;
+//             }
+//             remaining -= 1;
+//         }
+
+//         count += 1;
+//     }
+//     println!("End count = {count}");
+// }
 
 // fn get_val(x: u32) -> u32 {
 //     x * 3
@@ -16,7 +72,7 @@ fn loops() {
 //     println!("{}", x)
 // }
 
-// fn tupls() {
+// fn tupls() { // tuples can be accessed using "." like objects in javascript
 //     // let tuple = (10, 30, 29);
 //     // println!("{}", tuple.0);
 
