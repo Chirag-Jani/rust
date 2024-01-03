@@ -24,21 +24,21 @@ fn conventional_loops() {
 }
 
 // fn loops() {
-//     // type 1: normal loops
-//     // loop {
-//     //     println!("Again")
-//     // }
+// type 1: normal loops
+// loop {
+//     println!("Again")
+// }
 
-//     // type 2 : assign values
-//     // let mut counter = 0;
+// type 2 : assign values
+// let mut counter = 0;
 
-//     // let result = loop {
-//     //     counter += 1;
+// let result = loop {
+//     counter += 1;
 
-//     //     if counter == 10 {
-//     //         break counter * 2;
-//     //     }
-//     // };
+//     if counter == 10 {
+//         break counter * 2;
+//     }
+// };
 
 //     // println!("The result is {result}");
 
