@@ -13,8 +13,8 @@ fn main() {
     // println!("'{}'", int);
 
     // length demo
-    let mut str = String::from("Hello");
-    println!("The string `{}` has {} bytes.", str, find_length(&mut str));
+    let str = String::from("Hello");
+    println!("The string `{}` has {} bytes.", str, find_length(&str));
 }
 
 // fn takes_ownership(some_string: &mut String) {
@@ -27,8 +27,7 @@ fn main() {
 //     println!("Some unsigned integer: {}", some_int);
 // }
 
-fn find_length(s: &mut String) -> usize {
-    s.push_str("Jani");
+fn find_length(s: &String) -> usize {
     let leng = s.len();
     leng
 }
