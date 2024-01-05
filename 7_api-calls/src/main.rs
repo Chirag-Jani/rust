@@ -4,8 +4,8 @@ use reqwest::header::USER_AGENT;
 
 #[derive(Deserialize, Debug)]
 struct User {
-    login: String,
-    id: i32,
+    // login: String,
+    // id: i32,
 }
 
 #[tokio::main]
