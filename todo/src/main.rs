@@ -17,6 +17,15 @@ fn main() {
         }
     } else if args.action == "complete" {
         // mark completed
+        match todo.complete(&args.item) {
+            None => println!("'{}' is not present in the list", args.item),
+            Some(_) =>
+                // calling save function to update into the file
+                match todo.save() {
+                    Ok(_) => println!("todo saved"),
+                    Err(why) => println!("An error occurred: {}", why),
+                }
+        }
     }
 }
 
@@ -28,8 +37,6 @@ struct Cli {
 
 #[derive(Debug)]
 struct Todo {
-    // item: String,
-    // done: bool,
     map: HashMap<String, bool>,
 }
 
@@ -70,16 +77,27 @@ impl Todo {
         // this is updating the file by passing self.map
         serde_json::to_writer_pretty(save_data, &self.map);
 
+        // printing all the items on the console
+        for (index, (key, value)) in self.map.iter().enumerate() {
+            println!("{}. {} : {}", index + 1, key, value);
+        }
+
         // returning OK
         Ok(())
     }
 
     // marking complete
     // getting key in the args
-    fn complete(self, key: &String) -> Result<(), Box<dyn std::error: Error>> {
+    fn complete(&mut self, key: &String) -> Option<()> {
         // matching item and marking true
         match self.map.get_mut(key) {
-            // to be implemented
+            // finds value and marks true
+            Some(val) =>
+                Some({
+                    *val = true;
+                }),
+            // returns none if doesn't find any value
+            None => None,
         }
     }
 }

@@ -1,3 +1,5 @@
 {
-  "testTask": false
+  "test": true,
+  "test2": false,
+  "test33": false
 }
