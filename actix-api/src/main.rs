@@ -1,46 +1,68 @@
-use actix_web::{ get, web, App, HttpResponse, HttpServer, Responder };
+// for actix web
+use actix_web::{ get, post, web, App, HttpResponse, HttpServer, Responder };
 
-struct AppliactionState {
-    app_name: String,
+// for mongodb
+mod modal;
+use modal::User;
+use mongodb::{ bson::doc, options::IndexOptions, Client, Collection, IndexModel };
+
+const DB_NAME: &str = "my_rust_app";
+const COLL_NAME: &str = "users";
+
+/// Adds a new user to the "users" collection in the database.
+#[post("/add_user")]
+async fn add_user(client: web::Data<Client>, form: web::Json<User>) -> HttpResponse {
+    let collection = client.database(DB_NAME).collection(COLL_NAME);
+    let result = collection.insert_one(form.into_inner(), None).await;
+    match result {
+        Ok(_) => HttpResponse::Ok().body("user added"),
+        Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
+    }
 }
 
-struct AnotherState {
-    is_another: bool,
-    built_who: String,
+#[get("/get_user/{username}")]
+async fn get_user(client: web::Data<Client>, username: web::Path<String>) -> HttpResponse {
+    let username = username.into_inner();
+    let collection: Collection<User> = client.database(DB_NAME).collection(COLL_NAME);
+    match collection.find_one(doc! { "username": &username }, None).await {
+        Ok(Some(user)) => HttpResponse::Ok().json(user),
+        Ok(None) => {
+            HttpResponse::NotFound().body(format!("No user found with username {username}"))
+        }
+        Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
+    }
 }
 
-#[get("/path")]
-async fn path() -> impl Responder {
-    HttpResponse::Ok().body("Hey there from path!")
-}
-
-async fn index(
-    data: web::Data<AppliactionState>,
-    data2: web::Data<AnotherState>
-) -> impl Responder {
-    let app_name = &data.app_name;
-    let creator = &data2.built_who;
-    let state = &data2.is_another;
-    format!("Hello from {app_name} which is build by {creator}, true?? {state}")
+// Creates an index on the "username" field to force the values to be unique.
+async fn create_username_index(client: &Client) {
+    let options = IndexOptions::builder().unique(true).build();
+    let model = IndexModel::builder()
+        .keys(doc! { "username": 1 })
+        .options(options)
+        .build();
+    client
+        .database(DB_NAME)
+        .collection::<User>(COLL_NAME)
+        .create_index(model, None).await
+        .expect("creating an index should succeed");
 }
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    HttpServer::new(|| {
+    // mongodb uri
+    let uri = String::from("mongodb://localhost:27017/my_rust_app");
+    // let uri = std::env::var("MONGODB_URI").unwrap_or_else(|_| "mongodb://localhost:27017".into());
+
+    let client = Client::with_uri_str(uri).await.expect("failed to connect");
+    // this is creating index (which we might not need at the moment for learning purpose)
+    create_username_index(&client).await;
+
+    HttpServer::new(move || {
         App::new()
-            .app_data(
-                web::Data::new(AppliactionState {
-                    app_name: String::from("Test app"),
-                })
-            )
-            .app_data(
-                web::Data::new(AnotherState {
-                    is_another: true,
-                    built_who: String::from("Jani"),
-                })
-            )
-            .service(path)
-            .service(web::scope("/app").route("/index.html", web::get().to(index)))
+            .app_data(web::Data::new(client.clone()))
+            // .service(get_all_users)
+            .service(get_user)
+            .service(add_user)
     })
         .bind(("127.0.0.1", 8080))?
         .run().await?;

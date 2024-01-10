@@ -6,4 +6,10 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+# actix-web for apis
 actix-web = { version = "4.4.1" }
+# For mongodb connection
+mongodb = "2.8.0"
+# read-write json
+serde_json = { version = "1.0.111" }
+serde = { version = "1.0.195" }
