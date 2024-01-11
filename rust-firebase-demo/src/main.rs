@@ -39,25 +39,34 @@ fn get_firebase_instance() -> Firebase {
     return firebase;
 }
 
+// ? TODO
 #[get("/get-user")]
 async fn get_user(name: web::Form<HashMap<String, String>>) -> HttpResponse {
     let fb = get_firebase_instance();
-    let data = fb.at("users").at(&name.0["name"]);
-    let user = data.get::<User>().await;
-    println!("{:?}", user);
-
-    match data.get::<User>().await {
-        Ok(user) => {
-            // Data was found
-            println!("Got the user: {:?}", user);
-            HttpResponse::Ok().body(format!("Got the name: {:?}", name.0["name"]))
+    let firebase = fb.at("users");
+    println!("Firebase instance : {:?}", firebase);
+    let users_result: Result<HashMap<String, User>, _> = firebase.get().await;
+    println!("All the users {:?}", users_result);
+    match users_result {
+        Ok(users) => {
+            // Find the user with the given name
+            if
+                let Some((user_key, user)) = users
+                    .iter()
+                    .find(|(_, user)| user.name == name["name"])
+            {
+                // println!("Found user {} with key {}: {:#?}", user.name, user_key, user);
+                HttpResponse::Ok()
+                    .content_type("application/json")
+                    .body(serde_json::to_string(&user).unwrap())
+            } else {
+                // println!("User with the given name not found");
+                HttpResponse::NotFound().body("User not found")
+            }
         }
-
         Err(err) => {
-            // Log other errors for further investigation
-            println!("Firebase Error: {:?}", err);
-            // Return an appropriate response, e.g., Internal Server Error
-            HttpResponse::InternalServerError().finish()
+            // println!("Error fetching users: {:?}", err);
+            HttpResponse::InternalServerError().body("Internal Server Error")
         }
     }
 }
