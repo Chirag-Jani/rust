@@ -1,5 +1,6 @@
 use actix_web::{ get, web, HttpResponse, HttpServer, App, Responder };
 use serde::Serialize;
+use actix_cors::Cors;
 mod queryParams;
 use queryParams::{ ImageParams, generate_image };
 
@@ -24,6 +25,7 @@ async fn get_image(query: web::Query<ImageParams>) -> impl Responder {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    let cors = Cors::permissive();
     HttpServer::new(|| { App::new().service(get_image) })
         .bind(("127.0.0.1", 8080))?
         .run().await?;

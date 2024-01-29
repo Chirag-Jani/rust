@@ -5,9 +5,31 @@ import { useEffect } from "react";
 function App() {
   useEffect(() => {
     const fn = async () => {
-      let data = await fetch("127.0.0.1:8080/get-data");
-      console.log(data.json());
+      // Set your parameter values
+      const height = 100;
+      const width = 200;
+      const cx = 50;
+      const cy = 75;
+
+      // Create URLSearchParams object to handle parameters
+      const params = new URLSearchParams();
+      params.append("height", height);
+      params.append("width", width);
+      params.append("cx", cx);
+      params.append("cy", cy);
+
+      // Append parameters to the URL
+      let url = `http://localhost:8080/get-image?${params.toString()}`;
+
+      // Make the fetch request
+      let response = await fetch(url);
+
+      // Parse and log the JSON response
+      let data = await response.json();
+      console.log(data);
     };
+
+    // Call the function
     fn();
   }, []);
 
