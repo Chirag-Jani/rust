@@ -1,30 +1,74 @@
-struct GroceryItem {
-    id: i32,
-    quantity: i32,
+#[derive(Debug)]
+#[allow(dead_code)]
+enum Color {
+    Red,
+    Blue,
+    Green,
 }
 
-impl GroceryItem {
-    fn print_id(&self) {
-        println!("ID: {}", self.id);
-    }
-    fn print_quantity(data: &GroceryItem) {
-        println!("Quantity: {}", data.quantity);
-    }
-    fn new_item() -> Self {
-        Self {
-            id: 0,
-            quantity: 0,
+impl Color {
+    fn print(&self) {
+        match self {
+            Color::Blue => {
+                println!("The box is blue.");
+            }
+            Color::Green => {
+                println!("The box is green.");
+            }
+            Color::Red => {
+                println!("The box is red.");
+            }
         }
     }
 }
 
-fn main() {
-    let demo = GroceryItem { id: 9387654, quantity: 43 };
-    demo.print_id();
-    GroceryItem::print_quantity(&demo);
+#[derive(Debug)]
+#[allow(dead_code)]
+struct Dimensions {
+    length: i32,
+    width: i32,
+    bredth: i32,
+}
 
-    let demo2 = GroceryItem::new_item();
-    demo2.print_id();
+impl Dimensions {
+    fn square() -> Self {
+        Dimensions {
+            length: 10,
+            width: 10,
+            bredth: 10,
+        }
+    }
+    fn print(&self) {
+        println!("{:?}", self);
+    }
+}
+
+struct ShippingBox {
+    dimension: Dimensions,
+    weight: i32,
+    color: Color,
+}
+
+impl ShippingBox {
+    fn new(_dimension: Dimensions, _weight: i32, _color: Color) -> Self {
+        ShippingBox {
+            dimension: _dimension,
+            weight: _weight,
+            color: _color,
+        }
+    }
+
+    fn get_shipment(&self) {
+        println!("Getting shipment...");
+        self.dimension.print();
+        println!("\nWeight  : {:?}", self.weight);
+        self.color.print();
+    }
+}
+
+fn main() {
+    let new = ShippingBox::new(Dimensions::square(), 33, Color::Red);
+    new.get_shipment();
 }
 
 /*
