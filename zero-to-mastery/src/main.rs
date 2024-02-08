@@ -1,31 +1,28 @@
-#[allow(dead_code)]
-#[derive(Debug)]
-struct Test {
-    student: String,
-    score: i32,
-}
-
-impl Test {
-    fn new(student: String, score: i32) -> Self {
-        Test {
-            student,
-            score,
-        }
-    }
-}
-
 fn main() {
-    let scores = vec![
-        Test::new("Ron".to_string(), 58),
-        Test::new("John".to_string(), 75),
-        Test::new("AMy".to_string(), 24)
-    ];
+    // first approach
+    // let numbers = vec![10, 20, 30, 40];
 
-    for score in scores {
-        if score.score < 34 {
-            println!("{} Failed with Percentage {}", score.student, score.score);
-        } else {
-            println!("{} Passed with Percentage {}", score.student, score.score);
+    // another way to do
+    let mut numbers = Vec::new();
+    numbers.push(10);
+    numbers.push(20);
+    numbers.push(30);
+    numbers.push(40);
+
+    for n in &numbers {
+        // first approach
+        // if n == 30 {
+        //     println!("Thirty");
+        // } else {
+        //     println!("{}", n);
+        // }
+
+        // could have used match
+        match n {
+            30 => println!("Thirty"),
+            _ => println!("{}", n),
         }
     }
+
+    println!("Total elements in your vector: {}", numbers.len());
 }
