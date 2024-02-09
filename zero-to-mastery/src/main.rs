@@ -1,38 +1,34 @@
 #[allow(dead_code)]
-struct TickData {
-    name: String,
-    price: u32,
+struct User {
+    age: Option<f32>,
+    email: String,
 }
 
-impl TickData {
-    fn new(name: String, price: u32) -> Self {
-        TickData { name, price }
+impl User {
+    fn new(age: f32, email: String) -> Self {
+        User {
+            age: Some(age),
+            email,
+        }
     }
-
-    fn print_ticket(&self) {
-        println!("The Ticket holder is {} and it's price is {}.", self.name, self.price)
-    }
-}
-
-enum Ticket {
-    Backstage(TickData),
-    Vip(TickData),
-    Standard(u32),
 }
 
 fn main() {
-    let mut tickets: Vec<Ticket> = Vec::new();
+    let mut users: Vec<User> = Vec::new();
 
-    tickets.push(Ticket::Backstage(TickData::new("Chirag Jani".to_string(), 999)));
-    tickets.push(Ticket::Vip(TickData::new("Jon".to_string(), 899)));
-    tickets.push(Ticket::Standard(499));
+    let us1 = User {
+        age: Some(23.0),
+        email: "test@mail.com".to_owned(),
+    };
 
-    for ticket in tickets {
-        match ticket {
-            Ticket::Backstage(data) => data.print_ticket(),
-            Ticket::Vip(data) => data.print_ticket(),
-            Ticket::Standard(price) => {
-                println!("This is a Standard Ticket and it's price is {}.", price);
+    users.push(us1);
+    users.push(User::new(45.0, "email@example.com".to_string()));
+    users.push(User { age: None, email: "hehe@heeh.com".to_owned() });
+
+    for user in users {
+        match user {
+            User { age, email } => {
+                println!("Age is: {:?} and Mail is : {:}", age, email);
             }
         }
     }
