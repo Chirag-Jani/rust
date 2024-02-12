@@ -1,6 +1,5 @@
 use minigrep::Config;
 use std::env;
-
 use std::process;
 
 fn main() {
@@ -10,8 +9,8 @@ fn main() {
     let config = Config::build(&args);
 
     match config {
-        Ok(file_content) => {
-            if let Err(e) = minigrep::run(file_content) {
+        Ok(config_instance) => {
+            if let Err(e) = minigrep::run(config_instance) {
                 println!("Application error: {e}");
                 process::exit(1);
             }
