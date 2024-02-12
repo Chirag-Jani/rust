@@ -1,19 +1,41 @@
 #[derive(Debug)]
 #[allow(dead_code)]
-struct Demo<A, B, C> {
-    age: A,
-    name: B,
-    nums: C,
+struct Tweet {
+    pub username: String,
+    pub content: String,
+    pub timestamp: u64,
 }
 
-impl<A, B, C> Demo<A, B, C> {
-    fn new(age: A, name: B, nums: C) -> Self {
-        Demo { age, name, nums }
+impl Tweet {
+    fn new(username: String, content: String, timestamp: u64) -> Self {
+        Self {
+            username,
+            content,
+            timestamp,
+        }
     }
 }
 
-fn main() {
-    let data= Demo::new("Hehe", "Hihi", [1,2,3,4,5]);
+impl Summary for Tweet {
+    fn summarize(&self) -> &String {
+        &self.username
+    }
+}
 
-    println!("{:?}", data);
+pub trait Summary {
+    fn summarize(&self) -> &String;
+}
+
+fn get_summary(twt: &impl Summary) {
+    println!("{:}", twt.summarize());
+}
+
+fn main() {
+    let t1 = Tweet::new(
+        "chiragjani001".to_owned(),
+        "this is the content of tweet".to_owned(),
+        12345,
+    );
+
+    get_summary(&t1);
 }
