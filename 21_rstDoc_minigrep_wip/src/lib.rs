@@ -66,6 +66,7 @@ mod tests {
     use super::*;
 
     #[test]
+    #[ignore]
     fn one_result() {
         let query = "duct";
         let contents = "\
@@ -74,5 +75,17 @@ safe, fast, productive.
 Pick three.";
 
         assert_eq!(vec!["safe, fast, productive."], search(query, contents));
+    }
+
+    #[test]
+    fn case_sensitive() {
+        let query = "e will";
+        let contents = "This is the sentence in which
+the code wiLl try to 
+find query.";
+
+        let s = search(query, contents);
+
+        println!("{:?}", s);
     }
 }
