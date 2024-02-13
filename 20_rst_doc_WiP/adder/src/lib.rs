@@ -17,9 +17,8 @@ mod tests {
     use super::*;
 
     #[test]
-    #[should_panic]
+    #[should_panic(expected = "This is the expected message")]
     fn guess() {
-        let g = Guess::new(23).unwrap();
-        assert_eq!(g.value, 23, "value mismatched")
+        let g = Guess::new(-1).unwrap();
     }
 }
