@@ -1,5 +1,13 @@
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
+struct Rect {
+    height: u32,
+    width: u32,
+}
+
+#[allow(dead_code)]
+impl Rect {
+    fn is_valid(&self) -> bool {
+        self.height != self.width
+    }
 }
 
 #[cfg(test)]
@@ -7,14 +15,14 @@ mod tests {
     use super::*;
 
     #[test]
-    fn changed_name() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
+    fn is_valid_rect() {
+        let _rect = Rect {
+            height: 32,
+            width: 52,
+        };
 
-    #[test]
-    fn another_test() {
-        let result = add(3, 4);
-        panic!("Make this test fail");
+        assert!(rect.is_valid())
+        // assert_ne!(2, 2, "Both values are same which should not be");
+        // assert_eq!(2, 2, "Both values are not same which should be");
     }
 }
