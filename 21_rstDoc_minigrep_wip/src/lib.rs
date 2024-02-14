@@ -1,3 +1,4 @@
+use std::env;
 use std::error::Error;
 use std::fs;
 
@@ -18,11 +19,16 @@ impl Config {
         let filepath: String = args[2].clone();
         let ignore_case;
 
-        if args[3] == "true" {
-            ignore_case = true;
-        } else {
-            ignore_case = false;
-        }
+        // NAIVE approach
+        // if args[3] == "true" {
+        //     ignore_case = true;
+        // } else {
+        //     ignore_case = false;
+        // }
+
+        // BETTER approach
+        ignore_case = env::var("IGNORE_CASE").is_ok();
+        // IGNORE_CASE=1 cargo run -- to poem.txt // run like this
 
         Ok(Self {
             query,
@@ -72,7 +78,7 @@ pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
         if line.contains(query) {
             // do something with line
             results.push(line);
-            println!("Found in line: {line}")
+            // println!("Found in line: {line}")
         }
     }
 
@@ -90,7 +96,7 @@ pub fn search_insensitive<'lifetime>(query: &str, contents: &'lifetime str) -> V
         if line.to_lowercase().contains(&query) {
             // do something with line
             results.push(line);
-            println!("Found in line: {line}")
+            // println!("Found in line: {line}")
         }
     }
 
