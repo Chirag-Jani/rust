@@ -12,7 +12,7 @@ pub struct Config {
 impl Config {
     pub fn build(args: &[String]) -> Result<Self, &str> {
         if args.len() < 3 {
-            return Err("Invalid length");
+            return Err("not enough arguments");
         };
 
         let query = args[1].clone();

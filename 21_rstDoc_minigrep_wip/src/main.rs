@@ -11,11 +11,11 @@ fn main() {
     match config {
         Ok(config_instance) => {
             if let Err(e) = minigrep::run(config_instance) {
-                println!("Application error: {e}");
+                eprintln!("Application error: {e}");
                 process::exit(1);
             }
         }
-        Err(e) => println!("Error reading file: {e}"),
+        Err(e) => eprintln!("Problem parsing arguments: {e}"),
     }
 
     // the below is the shorthand and works better
